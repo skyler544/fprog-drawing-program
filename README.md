@@ -9,3 +9,7 @@ This application is containerized with Docker. The `Makefile` provides a quick i
 - `make` --- Build the Docker image and start the application
 - `make stop` --- Stop the running container.
 - `make clean` --- Stop the running container, then remove it and the built image.
+
+## Usage
+
+Visit the running application at `localhost:8080`. Left clicks start and end lines, while right clicks end shapes. The undo and redo buttons do what you would expect.
