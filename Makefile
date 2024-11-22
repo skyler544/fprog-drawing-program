@@ -1,11 +1,17 @@
+NAME := drawing-app
+
 all: run
 
 run: build
-	docker run -p 8080:80 --name drawing-app drawing-app
+	docker start $(NAME) || \
+	docker run -p 8080:80 --name $(NAME) $(NAME)
 
 build:
-	docker build -t drawing-app .
+	docker build -t $(NAME) .
 
-clean:
-	docker rm -f drawing-app
-	docker rmi drawing-app
+clean: stop
+	docker rm $(NAME)
+	docker rmi $(NAME)
+
+stop:
+	docker stop $(NAME)
