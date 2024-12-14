@@ -1,21 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Drawing Program</title>
     <style>
-        canvas {
-            border: 1px solid black;
-            display: block;
-            margin: 20px auto;
-        }
+      canvas {
+        border: 1px solid black;
+        display: block;
+        margin: 20px auto;
+      }
+      #buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      button {
+        margin: 0 10px;
+      }
     </style>
   </head>
   <body>
     <canvas id="drawingCanvas" width="600" height="600"></canvas>
-    <button id="undo">Undo</button>
-    <button id="redo">Redo</button>
+    <div id="buttons">
+      <button id="undo">Undo</button>
+      <button id="redo">Redo</button>
+    </div>
     <script src="app/drawing.js"></script>
   </body>
 </html>
