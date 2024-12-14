@@ -7,21 +7,23 @@ all: run
 shell: run
 	docker exec -it $(NAME) sh
 
-run: compile build
-	docker run -d -p 8080:80 -v $(PWD)/dist:$(APP) --name $(NAME) $(NAME)
+run:
+	docker compose up -d
 
 build:
-	docker build -t $(NAME) .
+	docker compose build
 
 compile: install
 	$(TSC)
 
-install: node_modules
-	npm install
+install:
+	@if [ ! -d "node_modules" ]; then \
+		npm install; \
+	fi
+
 
 clean:
-	-docker rm -f $(NAME)
-	-docker rmi -f $(NAME)
+	docker compose down
 
 stop:
-	docker stop $(NAME)
+	docker compose stop

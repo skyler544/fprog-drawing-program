@@ -1,0 +1,10 @@
+services:
+  drawing-app:
+    container_name: drawing-app
+    image: drawing-app
+    build:
+      context: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./dist:/usr/share/nginx/html/app
