@@ -1,18 +1,22 @@
-application = () => {
+let application: any = () => {
   class Point {
-    constructor(x, y) {
+    x: number;
+    y: number;
+    constructor(x: number, y: number) {
       this.x = x;
       this.y = y;
     }
   }
 
   class Line {
-    constructor(start, end) {
+    start: Point;
+    end: Point;
+    constructor(start: Point, end: Point) {
       this.start = start;
       this.end = end;
     }
 
-    draw(ctx) {
+    draw(ctx: any) {
       ctx.beginPath();
       ctx.moveTo(this.start.x, this.start.y);
       ctx.lineTo(this.end.x, this.end.y);
@@ -21,7 +25,11 @@ application = () => {
   }
 
   class DrawingProgram {
-    constructor(canvas) {
+    canvas: any;
+    ctx: any;
+    lines: Line[];
+    tempLineStart: Point | null;
+    constructor(canvas: any) {
       this.canvas = canvas;
       this.ctx = canvas.getContext("2d");
       this.lines = [];
@@ -32,24 +40,24 @@ application = () => {
     }
 
     setupEventListeners() {
-      this.canvas.addEventListener("click", (event) =>
+      this.canvas.addEventListener("click", (event: any) =>
         this.handleLeftClick(event),
       );
 
-      document
-        .getElementById("undo")
+      document!
+        .getElementById("undo")!
         .addEventListener("click", () => this.undo());
-      document
-        .getElementById("redo")
+      document!
+        .getElementById("redo")!
         .addEventListener("click", () => this.redo());
     }
 
-    getMousePosition(event) {
+    getMousePosition(event: any) {
       const rect = this.canvas.getBoundingClientRect();
       return new Point(event.clientX - rect.left, event.clientY - rect.top);
     }
 
-    handleLeftClick(event) {
+    handleLeftClick(event: any) {
       const point = this.getMousePosition(event);
 
       console.log("FOO click!!!");
@@ -69,7 +77,7 @@ application = () => {
     redraw() {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-      this.lines.forEach((line) => line.draw(ctx));
+      this.lines.forEach((line) => line.draw(this.ctx));
     }
 
     undo() {
@@ -85,4 +93,4 @@ application = () => {
   new DrawingProgram(canvas);
 };
 
-window.onLoad = application();
+window.onload = application();
