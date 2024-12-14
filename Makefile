@@ -1,10 +1,14 @@
 NAME := drawing-app
 TSC  := ./node_modules/.bin/tsc
+APP  := /usr/share/nginx/html/app
 
 all: run
 
+shell: run
+	docker exec -it $(NAME) sh
+
 run: compile build
-	docker run -p 8080:80 -v $(PWD)/dist/drawing.js:/usr/share/nginx/html/drawing.js --name $(NAME) $(NAME)
+	docker run -d -p 8080:80 -v $(PWD)/dist:$(APP) --name $(NAME) $(NAME)
 
 build:
 	docker build -t $(NAME) .
@@ -12,7 +16,7 @@ build:
 compile: install
 	$(TSC)
 
-install:
+install: node_modules
 	npm install
 
 clean:
