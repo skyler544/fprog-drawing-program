@@ -24,9 +24,9 @@ install:
 		npm install; \
 	fi
 
-
 clean:
 	docker compose down
+	rm -rf dist node_modules
 
 stop:
 	docker compose stop
