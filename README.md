@@ -14,4 +14,50 @@ This application is containerized with Docker. The `Makefile` provides a quick i
 
 Visit the running application at `localhost:8080`. Left clicks start and end lines, while right clicks end shapes. The undo and redo buttons do what you would expect.
 
-![State Diagram](./state-diagram.png?raw=true "State Diagram")
+## Modelling
+
+### Domain objects
+```mermaid
+---
+config:
+    theme: neutral
+---
+classDiagram
+    class Point {
+        +int x
+        +int y
+    }
+    class Node {
+        +Point payload
+        +Node next
+    }
+    class Polygon {
+        +Node head
+        +addNode(Point point)
+    }
+
+    Polygon --* Node
+    Node --* Point
+```
+
+### Sequence Diagram
+```mermaid
+---
+config:
+    theme: neutral
+---
+sequenceDiagram
+    Participant I as Idle
+    Participant U as Undo button
+    Participant R as Redo button
+    Participant D as Drawing a line
+
+    I->>D: Single click
+    D->>D: Single click
+    D->>I: Double click
+
+    U-->>I: Single click
+    U-->>D: Single click
+    R-->>I: Single click
+    R-->>D: Single click
+```
