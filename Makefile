@@ -4,17 +4,20 @@ APP  := /usr/share/nginx/html/app
 
 all: run
 
-shell: run
+shell: compile run
 	docker exec -it $(NAME) sh
 
-run:
+run: compile
 	docker compose up -d
 
-build:
+build: compile
 	docker compose build
 
 compile: install
 	$(TSC)
+
+watch: install
+	$(TSC) -w
 
 install:
 	@if [ ! -d "node_modules" ]; then \
