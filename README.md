@@ -6,7 +6,8 @@ This application draws polygons using HTML 5 canvas and vanilla JavaScript.
 
 This application is containerized with Docker. The `Makefile` provides a quick interface for starting and stopping the application.
 
-- `make` --- Build the Docker image and start the application
+- `make` --- Build the Docker image and start the application.
+- `make shell` --- Open the container's shell.
 - `make stop` --- Stop the running container.
 - `make clean` --- Stop the running container, then remove it and the built image.
 
