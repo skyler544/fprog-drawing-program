@@ -1,2 +1,41 @@
 /dist/
 /node_modules/
+
+# LaTeX build files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.gz
+*.idx
+*.ilg
+*.ind
+*.nav
+*.snm
+*.fdb_latexmk
+*.fls
+
+# LaTeX editor backup files
+*~
+*.bak
+*.swp
+*.swo
+
+# Generated PDF files
+*.pdf
+
+# Temporary files
+*.synctex.gz
+
+# MacOS-specific
+.DS_Store
+
+# Windows-specific
+Thumbs.db
+
+# Vim swap files
+*.swp
