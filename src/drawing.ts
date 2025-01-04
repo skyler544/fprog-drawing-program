@@ -1,55 +1,59 @@
-class Point {
+type Point = Readonly<{
   x: number;
   y: number;
+}>;
 
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
-}
+type DrawingState = Readonly<{
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+  radius: number;
+}>;
 
-class DrawingProgram {
-  private canvas: HTMLCanvasElement;
-  private ctx: CanvasRenderingContext2D;
-  private radius: number = 4;
+const createPoint = (x: number, y: number): Point => ({ x, y });
 
-  constructor(canvas: HTMLCanvasElement) {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    this.setupEventListeners();
-  }
+const getMousePosition = (
+  canvas: HTMLCanvasElement,
+  event: MouseEvent,
+): Point => {
+  const rect = canvas.getBoundingClientRect();
+  return createPoint(event.clientX - rect.left, event.clientY - rect.top);
+};
 
-  setupEventListeners() {
-    this.canvas.addEventListener("click", (event: MouseEvent) =>
-      this.handleLeftClick(event),
-    );
-  }
+const drawDot = (
+  ctx: CanvasRenderingContext2D,
+  point: Point,
+  radius: number,
+): void => {
+  ctx.beginPath();
+  ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+  ctx.fillStyle = "black";
+  ctx.fill();
+  ctx.closePath();
+};
 
-  getMousePosition(event: MouseEvent): Point {
-    const rect = this.canvas.getBoundingClientRect();
-    return new Point(event.clientX - rect.left, event.clientY - rect.top);
-  }
-
-  handleLeftClick(event: MouseEvent) {
-    const point = this.getMousePosition(event);
+const handleLeftClick =
+  (state: DrawingState) =>
+  (event: MouseEvent): void => {
+    const point = getMousePosition(state.canvas, event);
 
     console.log("Left click:");
     console.log(point);
 
-    this.drawDot(point);
-  }
+    drawDot(state.ctx, point, state.radius);
+  };
 
-  drawDot(point: Point) {
-    this.ctx.beginPath();
-    this.ctx.arc(point.x, point.y, this.radius, 0, Math.PI * 2);
+const initializeDrawingProgram = (canvas: HTMLCanvasElement): void => {
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+  const state: DrawingState = {
+    canvas,
+    ctx,
+    radius: 4,
+  };
 
-    this.ctx.fillStyle = "black";
-    this.ctx.fill();
-    this.ctx.closePath();
-  }
-}
+  canvas.addEventListener("click", handleLeftClick(state));
+};
 
 window.onload = () => {
   const canvas = document.getElementById("drawingCanvas") as HTMLCanvasElement;
-  new DrawingProgram(canvas);
+  initializeDrawingProgram(canvas);
 };
