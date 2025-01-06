@@ -37,7 +37,8 @@ export class DotDrawingProgram implements IDrawingProgram {
   }
 
   doubleClick(): void {
-    throw new Error("Method not implemented.");
+    // this is a no-op for dot drawing
+    return;
   }
 
   undo(): void {
