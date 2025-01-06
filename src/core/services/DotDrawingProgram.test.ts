@@ -22,4 +22,18 @@ describe("DotDrawingProgram", () => {
 
     expect(mockCtx.closePath).toHaveBeenCalled();
   });
+
+  it("should add a point to the undo stack on leftClick", () => {
+    drawingProgram.leftClick(new Point(100, 150));
+
+    expect(drawingProgram["undoStack"]).toEqual([new Point(100, 150)]);
+  });
+
+  it("should move the last point to the redo stack on undo", () => {
+    drawingProgram.leftClick(new Point(100, 150));
+    drawingProgram.undo();
+
+    expect(drawingProgram["undoStack"]).toEqual([]);
+    expect(drawingProgram["redoStack"]).toEqual([new Point(100, 150)]);
+  });
 });
