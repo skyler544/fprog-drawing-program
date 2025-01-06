@@ -18,6 +18,9 @@ export class InputHandler {
 
     const undoButton = document.getElementById("undo");
     undoButton?.addEventListener("click", () => this.drawingProgram.undo());
+
+    const redoButton = document.getElementById("redo");
+    redoButton?.addEventListener("click", () => this.drawingProgram.redo());
   }
 
   getMousePosition(event: MouseEvent): Point {

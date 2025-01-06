@@ -11,7 +11,7 @@ describe("DotDrawingProgram", () => {
     drawingProgram = new DotDrawingProgram(mockCtx);
   });
 
-  it("should draw a dot at the correct position on leftClick", () => {
+  it("should draw a dot xon leftClick", () => {
     drawingProgram.leftClick(new Point(100, 150));
 
     expect(mockCtx.beginPath).toHaveBeenCalled();
@@ -35,5 +35,14 @@ describe("DotDrawingProgram", () => {
 
     expect(drawingProgram["undoStack"]).toEqual([]);
     expect(drawingProgram["redoStack"]).toEqual([new Point(100, 150)]);
+  });
+
+  it("should move the last point back to the undo stack on redo", () => {
+    drawingProgram.leftClick(new Point(100, 150));
+    drawingProgram.undo();
+    drawingProgram.redo();
+
+    expect(drawingProgram["undoStack"]).toEqual([new Point(100, 150)]);
+    expect(drawingProgram["redoStack"]).toEqual([]);
   });
 });

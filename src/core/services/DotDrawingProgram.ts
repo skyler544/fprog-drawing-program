@@ -50,6 +50,11 @@ export class DotDrawingProgram implements IDrawingProgram {
   }
 
   redo(): void {
-    throw new Error("Method not implemented.");
+    if (this.redoStack.length === 0) {
+      return;
+    }
+
+    this.undoStack.push(this.redoStack.pop() as Point);
+    this.redraw();
   }
 }
