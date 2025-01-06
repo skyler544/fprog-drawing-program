@@ -1,11 +1,11 @@
+import { IDrawingProgram } from "./drawing-interface.js";
 import { Point } from "./point.js";
-import { DrawingProgram } from "./drawing.js";
 
 export class InputHandler {
   private canvas: HTMLCanvasElement;
-  private drawingProgram: DrawingProgram;
+  private drawingProgram: IDrawingProgram;
 
-  constructor(canvas: HTMLCanvasElement, drawingProgram: DrawingProgram) {
+  constructor(canvas: HTMLCanvasElement, drawingProgram: IDrawingProgram) {
     this.canvas = canvas;
     this.drawingProgram = drawingProgram;
     this.setupEventListeners();

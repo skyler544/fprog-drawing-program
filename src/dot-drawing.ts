@@ -1,6 +1,7 @@
+import { IDrawingProgram } from "./drawing-interface.js";
 import { Point } from "./point.js";
 
-export class DrawingProgram {
+export class DotDrawingProgram implements IDrawingProgram {
   private ctx: CanvasRenderingContext2D;
   private radius = 4;
 
@@ -15,5 +16,17 @@ export class DrawingProgram {
     this.ctx.fillStyle = "black";
     this.ctx.fill();
     this.ctx.closePath();
+  }
+
+  doubleClick(point: Point): void {
+    throw new Error("Method not implemented.");
+  }
+
+  undo(): void {
+    throw new Error("Method not implemented.");
+  }
+
+  redo(): void {
+    throw new Error("Method not implemented.");
   }
 }
