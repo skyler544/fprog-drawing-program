@@ -16,6 +16,10 @@ export class InputHandler {
       this.handleLeftClick(event),
     );
 
+    this.canvas.addEventListener("dblclick", (event: MouseEvent) =>
+      this.handleDoubleClick(event),
+    );
+
     const undoButton = document.getElementById("undo");
     undoButton?.addEventListener("click", () => this.drawingProgram.undo());
 
@@ -35,5 +39,14 @@ export class InputHandler {
     console.log(point);
 
     this.drawingProgram.leftClick(point);
+  }
+
+  handleDoubleClick(event: MouseEvent) {
+    const point = this.getMousePosition(event);
+
+    console.log("Double click:");
+    console.log(point);
+
+    this.drawingProgram.doubleClick();
   }
 }
