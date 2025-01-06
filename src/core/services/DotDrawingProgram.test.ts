@@ -24,10 +24,7 @@ describe("DotDrawingProgram", () => {
 
     drawingProgram.leftClick(point);
 
-    // Verify that beginPath was called
     expect(mockCtx.beginPath).toHaveBeenCalled();
-
-    // Verify that arc was called with the correct parameters
     expect(mockCtx.arc).toHaveBeenCalledWith(
       point.x,
       point.y,
@@ -36,13 +33,9 @@ describe("DotDrawingProgram", () => {
       Math.PI * 2,
     );
 
-    // Verify that fillStyle was set to black
     expect(mockCtx.fillStyle).toBe("black");
-
-    // Verify that fill was called
     expect(mockCtx.fill).toHaveBeenCalled();
 
-    // Verify that closePath was called
     expect(mockCtx.closePath).toHaveBeenCalled();
   });
 });
