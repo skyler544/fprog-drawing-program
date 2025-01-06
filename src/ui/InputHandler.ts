@@ -15,6 +15,9 @@ export class InputHandler {
     this.canvas.addEventListener("click", (event: MouseEvent) =>
       this.handleLeftClick(event),
     );
+
+    const undoButton = document.getElementById("undo");
+    undoButton?.addEventListener("click", () => this.drawingProgram.undo());
   }
 
   getMousePosition(event: MouseEvent): Point {
