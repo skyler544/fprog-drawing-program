@@ -3,6 +3,10 @@ import { InputHandler } from "./ui/InputHandler.js";
 
 export class Main {
   constructor() {
+    this.init();
+  }
+
+  private init() {
     const canvas = document.getElementById(
       "drawingCanvas",
     ) as HTMLCanvasElement;
