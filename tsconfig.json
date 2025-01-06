@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ESNext",
+    "target": "ES2022",
     "outDir": "./dist",
     "rootDir": "./src",
     "skipLibCheck": true,
     "strict": true,
     "target": "es2016"
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["tests/**/*.test.ts"]
 }

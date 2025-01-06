@@ -28,5 +28,9 @@ clean:
 	docker compose down
 	rm -rf dist node_modules
 
+extra-clean: clean
+	docker compose down --rmi all
+	docker image prune -af
+
 stop:
 	docker compose stop
