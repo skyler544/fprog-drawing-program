@@ -19,6 +19,9 @@ compile: install
 watch: install
 	$(TSC) -w
 
+test: install
+	npm test
+
 install:
 	@if [ ! -d "node_modules" ]; then \
 		npm install; \
