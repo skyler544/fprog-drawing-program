@@ -1,17 +1,9 @@
-class Point {
-  x: number;
-  y: number;
+import { Point } from "./point.js";
 
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
-}
-
-class DrawingProgram {
+export class DrawingProgram {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  private radius: number = 4;
+  private radius = 4;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -48,8 +40,3 @@ class DrawingProgram {
     this.ctx.closePath();
   }
 }
-
-window.onload = () => {
-  const canvas = document.getElementById("drawingCanvas") as HTMLCanvasElement;
-  new DrawingProgram(canvas);
-};
