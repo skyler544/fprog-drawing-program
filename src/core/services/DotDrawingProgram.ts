@@ -1,5 +1,5 @@
-import { IDrawingProgram } from "./drawing-interface.js";
-import { Point } from "./point.js";
+import { Point } from "../entities/Point.js";
+import { IDrawingProgram } from "../interfaces/DrawingProgram.js";
 
 export class DotDrawingProgram implements IDrawingProgram {
   private ctx: CanvasRenderingContext2D;

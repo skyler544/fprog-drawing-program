@@ -1,5 +1,5 @@
-import { IDrawingProgram } from "./drawing-interface.js";
-import { Point } from "./point.js";
+import { Point } from "../core/entities/Point.js";
+import { IDrawingProgram } from "../core/interfaces/DrawingProgram.js";
 
 export class InputHandler {
   private canvas: HTMLCanvasElement;

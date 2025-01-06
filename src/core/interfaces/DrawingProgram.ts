@@ -1,4 +1,4 @@
-import { Point } from "./point";
+import { Point } from "../entities/Point.js";
 
 export interface IDrawingProgram {
   leftClick(point: Point): void;
