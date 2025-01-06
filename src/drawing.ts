@@ -1,15 +1,5 @@
-type Point = Readonly<{
-  x: number;
-  y: number;
-}>;
-
-type DrawingState = Readonly<{
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
-  radius: number;
-}>;
-
-const createPoint = (x: number, y: number): Point => ({ x, y });
+import { Point, createPoint } from "./point.js";
+import { DrawingState } from "./drawing-state.js";
 
 const getMousePosition = (
   canvas: HTMLCanvasElement,
@@ -42,7 +32,7 @@ const handleLeftClick =
     drawDot(state.ctx, point, state.radius);
   };
 
-const initializeDrawingProgram = (canvas: HTMLCanvasElement): void => {
+export const initializeDrawingProgram = (canvas: HTMLCanvasElement): void => {
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
   const state: DrawingState = {
     canvas,
@@ -51,9 +41,4 @@ const initializeDrawingProgram = (canvas: HTMLCanvasElement): void => {
   };
 
   canvas.addEventListener("click", handleLeftClick(state));
-};
-
-window.onload = () => {
-  const canvas = document.getElementById("drawingCanvas") as HTMLCanvasElement;
-  initializeDrawingProgram(canvas);
 };

@@ -19,6 +19,9 @@ compile: install
 watch: install
 	$(TSC) -w
 
+test: install
+	npm test
+
 install:
 	@if [ ! -d "node_modules" ]; then \
 		npm install; \
@@ -27,6 +30,10 @@ install:
 clean:
 	docker compose down
 	rm -rf dist node_modules
+
+extra-clean: clean
+	docker compose down --rmi all
+	docker image prune -af
 
 stop:
 	docker compose stop
