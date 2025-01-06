@@ -18,7 +18,7 @@ export class DotDrawingProgram implements IDrawingProgram {
     this.ctx.closePath();
   }
 
-  doubleClick(point: Point): void {
+  doubleClick(): void {
     throw new Error("Method not implemented.");
   }
 
