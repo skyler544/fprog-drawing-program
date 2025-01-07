@@ -4,6 +4,8 @@ import { IDrawingProgram } from "../interfaces/DrawingProgram.js";
 export class PolygonDrawingProgram implements IDrawingProgram {
   private ctx: CanvasRenderingContext2D;
 
+  // private currentPolygon: Point[] = [];
+
   private undoStack: Point[][] = [];
   private redoStack: Point[][] = [];
 
@@ -35,8 +37,12 @@ export class PolygonDrawingProgram implements IDrawingProgram {
     this.ctx.stroke();
   }
 
+  private currentPolygon(stack: Point[][]): Point[] {
+    return stack[stack.length - 1];
+  }
+
   leftClick(point: Point) {
-    const currentPolygon = this.undoStack[this.undoStack.length - 1];
+    const currentPolygon = this.currentPolygon(this.undoStack);
 
     if (currentPolygon) {
       currentPolygon.push(point);
@@ -49,19 +55,40 @@ export class PolygonDrawingProgram implements IDrawingProgram {
   }
 
   doubleClick(): void {
-    this.undoStack.push([]);
+    this.undoStack.push([]); // check this for cleanliness
     this.redraw();
   }
 
   undo(): void {
     if (this.undoStack.length === 0) {
+      // could go up to the input handler? hide the undo/redo buttons if they can't be used
       return;
     }
 
-    const lastPolygon = this.undoStack[this.polygonStack.length - 1];
-    // const lastPoint =
-    if (lastPolygon) {
-      this.redoStack.push(lastPolygon);
+    // 1. get the polygon we're currently drawing
+    const currentPolygon = this.currentPolygon(this.undoStack);
+    // 2. pop whatever point was added last
+    const lastPoint = currentPolygon.pop();
+
+    // 3. get or create a polygon in the redo stack
+    const currentRedoPolygon = this.currentPolygon(this.redoStack) ?? [];
+
+    console.log("lastPoint", lastPoint);
+    console.log("currentRedoPolygon", currentRedoPolygon);
+
+    if (lastPoint) {
+      // make a dedicated method
+      // 4. if we have a last point, add it to the current redo polygon
+      currentRedoPolygon.push(lastPoint);
+      // 5. push the current redo polygon to the redo stack
+      this.redoStack.push(currentRedoPolygon);
+    }
+
+    // 6. if the current polygon is empty, pop it from the undo stack
+    // and put a new empty polygon in the redo stack
+    if (currentPolygon.length === 0) {
+      this.undoStack.pop();
+      this.redoStack.push([]);
     }
 
     this.redraw();
@@ -72,10 +99,30 @@ export class PolygonDrawingProgram implements IDrawingProgram {
       return;
     }
 
-    const lastPolygon = this.redoStack.pop();
-    if (lastPolygon) {
-      this.undoStack.push(lastPolygon);
+    const currentRedoPolygon = this.currentPolygon(this.redoStack);
+    const lastPoint = currentRedoPolygon.pop();
+
+    const currentPolygon = this.currentPolygon(this.undoStack) ?? [];
+
+    if (lastPoint) {
+      // check if this works with references, and if so stop doing that
+      currentPolygon.push(lastPoint);
+      this.undoStack.push(currentPolygon);
     }
+
+    if (currentRedoPolygon.length === 0) {
+      this.redoStack.pop();
+      this.undoStack.push([]);
+    }
+
+    // if (currentRedoPolygon) {
+    // this.undoStack.push(currentRedoPolygon);
+    // }
+
+    // const lastPolygon = this.redoStack.pop();
+    // if (lastPolygon) {
+    // this.undoStack.push(lastPolygon);
+    // }
 
     this.redraw();
   }
