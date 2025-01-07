@@ -4,6 +4,7 @@ import { IDrawingProgram } from "../core/interfaces/DrawingProgram.js";
 export class InputHandler {
   private canvas: HTMLCanvasElement;
   private drawingProgram: IDrawingProgram;
+  private singleClickTimeout: number | null = null;
 
   constructor(canvas: HTMLCanvasElement, drawingProgram: IDrawingProgram) {
     this.canvas = canvas;
@@ -33,19 +34,29 @@ export class InputHandler {
   }
 
   handleLeftClick(event: MouseEvent) {
-    const point = this.getMousePosition(event);
+    if (this.singleClickTimeout !== null) {
+      clearTimeout(this.singleClickTimeout);
+    }
 
-    console.log("Left click:");
-    console.log(point);
+    this.singleClickTimeout = window.setTimeout(() => {
+      const point = this.getMousePosition(event);
 
-    this.drawingProgram.leftClick(point);
+      console.log("Left click:");
+      console.log(point);
+
+      this.drawingProgram.leftClick(point);
+
+      this.singleClickTimeout = null;
+    }, 300);
   }
 
   handleDoubleClick(event: MouseEvent) {
-    const point = this.getMousePosition(event);
+    if (this.singleClickTimeout !== null) {
+      clearTimeout(this.singleClickTimeout);
+      this.singleClickTimeout = null;
+    }
 
     console.log("Double click:");
-    console.log(point);
 
     this.drawingProgram.doubleClick();
   }
