@@ -16,6 +16,12 @@ export class PolygonDrawingProgram implements IDrawingProgram {
     currentPolygon.push(point);
     this.history.push(currentPolygon);
 
+    console.log(
+      "[LeftClick] History: ",
+      this.history,
+      this.polygonsToString(this.history),
+    );
+
     this.redoStack = [];
     this.redraw();
   }
@@ -32,7 +38,14 @@ export class PolygonDrawingProgram implements IDrawingProgram {
 
     const currentPolygon = this.currentPolygon(this.history);
     this.undoLastPoint(currentPolygon);
-    this.undoHandleEmptyPolygon(currentPolygon);
+    // this.undoHandleEmptyPolygon(currentPolygon);
+
+    if (currentPolygon.length > 0) {
+      this.history.push(currentPolygon);
+    }
+
+    console.log("[Undo] History: ", this.polygonsToString(this.history));
+    console.log("[Undo] RedoStack: ", this.polygonsToString(this.redoStack));
 
     this.redraw();
   }
@@ -45,8 +58,26 @@ export class PolygonDrawingProgram implements IDrawingProgram {
     const currentRedoPolygon = this.currentPolygon(this.redoStack);
     this.redoLastPoint(currentRedoPolygon);
     this.redoHandleEmptyPolygon(currentRedoPolygon);
+    this.redoStack.push(currentRedoPolygon);
+
+    console.log(
+      "[Redo] History: ",
+      this.history,
+      this.polygonsToString(this.history),
+    );
+    console.log(
+      "[Redo] RedoStack: ",
+      this.redoStack,
+      this.polygonsToString(this.redoStack),
+    );
 
     this.redraw();
+  }
+
+  private polygonsToString(points: Point[][]): string {
+    return points
+      .map((row) => row.map((point) => `(${point.x}, ${point.y})`).join(", "))
+      .join("'\n'");
   }
 
   private redraw() {
@@ -74,7 +105,7 @@ export class PolygonDrawingProgram implements IDrawingProgram {
   }
 
   private currentPolygon(history: Point[][]): Point[] {
-    return history[history.length - 1];
+    return history.pop() as Point[];
   }
 
   private undoLastPoint(polygon: Point[]): void {
@@ -91,7 +122,7 @@ export class PolygonDrawingProgram implements IDrawingProgram {
   private undoHandleEmptyPolygon(polygon: Point[]) {
     if (polygon.length === 0) {
       this.history.pop();
-      this.redoStack.push([]);
+      // this.redoStack.push([]);
     }
   }
 
