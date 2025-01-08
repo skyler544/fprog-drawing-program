@@ -4,6 +4,10 @@ export class Polygon {
   private points: Point[] = [];
   private redoStack: Point[] = [];
 
+  getPoints(): Point[] {
+    return this.points;
+  }
+
   addPoint(point: Point) {
     this.points.push(point);
     this.redoStack = [];
@@ -31,22 +35,5 @@ export class Polygon {
     }
 
     this.points.push(this.redoStack.pop() as Point);
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    if (this.points.length < 2) {
-      return;
-    }
-
-    ctx.beginPath();
-    ctx.moveTo(this.points[0].x, this.points[0].y);
-
-    for (let i = 1; i < this.points.length; i++) {
-      const point = this.points[i];
-      ctx.lineTo(point.x, point.y);
-    }
-
-    ctx.strokeStyle = "black";
-    ctx.stroke();
   }
 }

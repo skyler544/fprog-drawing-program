@@ -1,23 +1,20 @@
+import { DrawingService } from "../services/DrawingService.js";
 import { Point } from "../entities/Point.js";
 import { Polygon } from "../entities/Polygon.js";
 import { IDrawingProgram } from "../interfaces/DrawingProgram.js";
 
 export class PolygonDrawingProgram implements IDrawingProgram {
-  private ctx: CanvasRenderingContext2D;
+  private drawingService: DrawingService;
 
   private undoStack: Polygon[] = [];
   private redoStack: Polygon[] = [];
 
-  constructor(ctx: CanvasRenderingContext2D) {
-    this.ctx = ctx;
+  constructor(drawingService: DrawingService) {
+    this.drawingService = drawingService;
   }
 
   private redraw() {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-
-    this.undoStack.forEach((polygon) => {
-      polygon?.draw(this.ctx);
-    });
+    this.drawingService.draw(this.undoStack);
   }
 
   leftClick(point: Point) {
