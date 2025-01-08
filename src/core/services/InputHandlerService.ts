@@ -1,7 +1,7 @@
-import { Point } from "../core/entities/Point.js";
-import { IDrawingProgram } from "../core/interfaces/DrawingProgram.js";
+import { Point } from "../entities/Point.js";
+import { IDrawingProgram } from "../interfaces/DrawingProgram.js";
 
-export class InputHandler {
+export class InputHandlerService {
   private canvas: HTMLCanvasElement;
   private drawingProgram: IDrawingProgram;
   private singleClickTimeout: number | null = null;

@@ -1,6 +1,6 @@
-import { DotDrawingProgram } from "./core/services/DotDrawingProgram.js";
+import { DrawingService } from "./core/services/DrawingService.js";
 import { PolygonDrawingProgram } from "./core/services/PolygonDrawingProgram.js";
-import { InputHandler } from "./ui/InputHandler.js";
+import { InputHandlerService } from "./core/services/InputHandlerService.js";
 
 export class Main {
   constructor() {
@@ -12,9 +12,8 @@ export class Main {
       "drawingCanvas",
     ) as HTMLCanvasElement;
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    // const drawingProgram = new DotDrawingProgram(ctx);
-    const drawingProgram = new PolygonDrawingProgram(ctx);
-    new InputHandler(canvas, drawingProgram);
+    const drawingProgram = new PolygonDrawingProgram(new DrawingService(ctx));
+    new InputHandlerService(canvas, drawingProgram);
   }
 }
 
