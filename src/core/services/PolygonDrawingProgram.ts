@@ -52,12 +52,7 @@ export class PolygonDrawingProgram implements IDrawingProgram {
   }
 
   redo(): void {
-    const currentPolygon = this.undoStack.pop() as Polygon;
-
-    if (currentPolygon && currentPolygon.redoStackLength() > 0) {
-      currentPolygon.redo();
-      this.undoStack.push(currentPolygon);
-      this.redraw();
+    if (this.innerRedo()) {
       return;
     }
 
@@ -65,14 +60,25 @@ export class PolygonDrawingProgram implements IDrawingProgram {
 
     if (currentRedoPolygon) {
       currentRedoPolygon.redo();
-    }
-    if (currentPolygon) {
-      this.undoStack.push(currentPolygon);
-    }
-    if (currentRedoPolygon) {
       this.undoStack.push(currentRedoPolygon);
     }
 
     this.redraw();
+  }
+
+  private innerRedo(): boolean {
+    const currentPolygon = this.undoStack.pop() as Polygon;
+    let returnValue = false;
+
+    if (currentPolygon) {
+      if (currentPolygon.redoStackLength() > 0) {
+        currentPolygon.redo();
+        returnValue = true;
+      }
+      this.undoStack.push(currentPolygon);
+    }
+
+    this.redraw();
+    return returnValue;
   }
 }
