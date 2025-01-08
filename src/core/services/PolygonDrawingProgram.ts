@@ -3,18 +3,18 @@ import { Point } from "../entities/Point.js";
 import { Polygon } from "../entities/Polygon.js";
 import { IDrawingProgram } from "../interfaces/DrawingProgram.js";
 
-export class PolygonDrawingProgram implements IDrawingProgram {
-  private drawingService: DrawingService;
+export class PolygonDrawingProgram {
+  private drawingService;
 
   private undoStack: Polygon[] = [];
   private redoStack: Polygon[] = [];
 
-  constructor(drawingService: DrawingService) {
+  constructor(drawingService: (polygons: Polygon[]) => void) {
     this.drawingService = drawingService;
   }
 
   private redraw() {
-    this.drawingService.draw(this.undoStack);
+    this.drawingService(this.undoStack);
   }
 
   leftClick(point: Point) {

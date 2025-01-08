@@ -12,7 +12,7 @@ export class Main {
       "drawingCanvas",
     ) as HTMLCanvasElement;
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    const drawingProgram = new PolygonDrawingProgram(new DrawingService(ctx));
+    const drawingProgram = new PolygonDrawingProgram(DrawingService(ctx));
     InputHandlerService(canvas, drawingProgram);
   }
 }

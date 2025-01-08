@@ -1,9 +1,10 @@
 import { Point } from "../entities/Point.js";
 import { IDrawingProgram } from "../interfaces/DrawingProgram.js";
+import { PolygonDrawingProgram } from "./PolygonDrawingProgram.js";
 
 export const InputHandlerService = (
   canvas: HTMLCanvasElement,
-  drawingProgram: IDrawingProgram,
+  drawingProgram: PolygonDrawingProgram,
 ) => {
   let singleClickTimeout: number | null = null;
 
