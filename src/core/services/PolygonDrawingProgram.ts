@@ -1,6 +1,13 @@
 import { Point } from "../entities/Point.js";
 import { Polygon, IPolygon } from "../entities/Polygon.js";
 
+export interface IPolygonDrawingProgram {
+  leftClick: (point: Point) => void;
+  doubleClick: () => void;
+  undo: () => void;
+  redo: () => void;
+}
+
 export const PolygonDrawingProgram = (
   drawingService: (polygons: IPolygon[]) => void,
 ) => {
@@ -79,5 +86,10 @@ export const PolygonDrawingProgram = (
     return returnValue;
   };
 
-  return [leftClick, doubleClick, undo, redo] as ((...args: any[]) => void)[];
+  return {
+    leftClick,
+    doubleClick,
+    undo,
+    redo,
+  };
 };

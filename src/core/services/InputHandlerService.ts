@@ -1,9 +1,9 @@
 import { Point } from "../entities/Point.js";
-import { PolygonDrawingProgram } from "./PolygonDrawingProgram.js";
+import { IPolygonDrawingProgram } from "./PolygonDrawingProgram.js";
 
 export const InputHandlerService = (
   canvas: HTMLCanvasElement,
-  drawingProgram: ((...args: any[]) => void)[],
+  drawingProgram: IPolygonDrawingProgram,
 ) => {
   let singleClickTimeout: number | null = null;
 
@@ -17,10 +17,10 @@ export const InputHandlerService = (
     );
 
     const undoButton = document.getElementById("undo");
-    undoButton?.addEventListener("click", () => drawingProgram[2]());
+    undoButton?.addEventListener("click", () => drawingProgram.undo());
 
     const redoButton = document.getElementById("redo");
-    redoButton?.addEventListener("click", () => drawingProgram[3]());
+    redoButton?.addEventListener("click", () => drawingProgram.redo());
   };
 
   const getMousePosition = (event: MouseEvent): Point => {
@@ -39,7 +39,7 @@ export const InputHandlerService = (
     singleClickTimeout = window.setTimeout(() => {
       const point = getMousePosition(event);
 
-      drawingProgram[0](point);
+      drawingProgram.leftClick(point);
 
       singleClickTimeout = null;
     }, 300);
@@ -51,7 +51,7 @@ export const InputHandlerService = (
       singleClickTimeout = null;
     }
 
-    drawingProgram[1]();
+    drawingProgram.doubleClick();
   };
 
   setupEventListeners();
