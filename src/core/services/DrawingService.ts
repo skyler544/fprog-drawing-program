@@ -1,4 +1,4 @@
-import { IPolygon } from "../entities/Polygon";
+import { IPolygon } from "../entities/Polygon.js";
 
 export const DrawingService = (ctx: CanvasRenderingContext2D) => {
   const draw = (polygons: IPolygon[]) => {
