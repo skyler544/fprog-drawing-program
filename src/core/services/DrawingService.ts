@@ -1,7 +1,7 @@
-import { Polygon } from "../entities/Polygon";
+import { IPolygon } from "../entities/Polygon";
 
 export const DrawingService = (ctx: CanvasRenderingContext2D) => {
-  const draw = (polygons: Polygon[]) => {
+  const draw = (polygons: IPolygon[]) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
     polygons.forEach((polygon) => {
@@ -11,7 +11,7 @@ export const DrawingService = (ctx: CanvasRenderingContext2D) => {
     });
   };
 
-  const drawPolygon = (polygon: Polygon) => {
+  const drawPolygon = (polygon: IPolygon) => {
     if (polygon.length() < 2) {
       return;
     }

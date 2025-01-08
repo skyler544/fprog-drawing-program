@@ -1,39 +1,63 @@
 import { Point } from "./Point.js";
 
-export class Polygon {
-  private points: Point[] = [];
-  private redoStack: Point[] = [];
-
-  getPoints(): Point[] {
-    return this.points;
-  }
-
-  addPoint(point: Point) {
-    this.points.push(point);
-    this.redoStack = [];
-  }
-
-  length() {
-    return this.points.length;
-  }
-
-  redoStackLength() {
-    return this.redoStack.length;
-  }
-
-  undo() {
-    if (this.points.length === 0) {
-      return;
-    }
-
-    this.redoStack.push(this.points.pop() as Point);
-  }
-
-  redo() {
-    if (this.redoStack.length === 0) {
-      return;
-    }
-
-    this.points.push(this.redoStack.pop() as Point);
-  }
+export interface IPolygon {
+  getPoints: () => Point[];
+  addPoint: (point: Point) => void;
+  length: () => number;
+  redoStackLength: () => number;
+  undo: () => void;
+  redo: () => void;
 }
+
+export const Polygon = (): IPolygon => {
+  const points: Point[] = [];
+  const redoStack: Point[] = [];
+
+  const getPoints = (): Point[] => {
+    return points;
+  };
+
+  const addPoint = (point: Point) => {
+    points.push(point);
+    emptyRedoStack();
+  };
+
+  const emptyRedoStack = () => {
+    while (redoStack.length > 0) {
+      redoStack.pop();
+    }
+  };
+
+  const length = () => {
+    return points.length;
+  };
+
+  const redoStackLength = () => {
+    return redoStack.length;
+  };
+
+  const undo = () => {
+    if (points.length === 0) {
+      return;
+    }
+
+    redoStack.push(points.pop() as Point);
+  };
+
+  const redo = () => {
+    if (redoStack.length === 0) {
+      return;
+    }
+
+    points.push(redoStack.pop() as Point);
+  };
+
+  return {
+    getPoints,
+    addPoint,
+    length,
+    redoStackLength,
+    undo,
+    redo,
+  };
+};

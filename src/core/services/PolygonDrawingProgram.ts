@@ -1,18 +1,18 @@
 import { Point } from "../entities/Point.js";
-import { Polygon } from "../entities/Polygon.js";
+import { Polygon, IPolygon } from "../entities/Polygon.js";
 
 export const PolygonDrawingProgram = (
-  drawingService: (polygons: Polygon[]) => void,
+  drawingService: (polygons: IPolygon[]) => void,
 ) => {
-  const undoStack: Polygon[] = [];
-  const redoStack: Polygon[] = [];
+  const undoStack: IPolygon[] = [];
+  const redoStack: IPolygon[] = [];
 
   const redraw = () => {
     drawingService(undoStack);
   };
 
   const leftClick = (point: Point) => {
-    const currentPolygon = undoStack.pop() ?? new Polygon();
+    const currentPolygon = undoStack.pop() ?? Polygon();
     currentPolygon.addPoint(point);
     undoStack.push(currentPolygon);
 
@@ -27,7 +27,7 @@ export const PolygonDrawingProgram = (
   };
 
   const doubleClick = () => {
-    undoStack.push(new Polygon());
+    undoStack.push(Polygon());
     return;
   };
 
@@ -36,7 +36,7 @@ export const PolygonDrawingProgram = (
       return;
     }
 
-    const currentPolygon = undoStack.pop() as Polygon;
+    const currentPolygon = undoStack.pop() as IPolygon;
     currentPolygon.undo();
 
     if (currentPolygon.length() === 0) {
@@ -53,7 +53,7 @@ export const PolygonDrawingProgram = (
       return;
     }
 
-    const currentRedoPolygon = redoStack.pop() as Polygon;
+    const currentRedoPolygon = redoStack.pop() as IPolygon;
 
     if (currentRedoPolygon) {
       currentRedoPolygon.redo();
@@ -64,7 +64,7 @@ export const PolygonDrawingProgram = (
   };
 
   const innerRedo = () => {
-    const currentPolygon = undoStack.pop() as Polygon;
+    const currentPolygon = undoStack.pop() as IPolygon;
     let returnValue = false;
 
     if (currentPolygon) {
