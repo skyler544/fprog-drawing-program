@@ -25,7 +25,10 @@ export const InputHandlerService = (
 
   const getMousePosition = (event: MouseEvent): Point => {
     const rect = canvas.getBoundingClientRect();
-    return new Point(event.clientX - rect.left, event.clientY - rect.top);
+    return {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    } as Point;
   };
 
   const handleLeftClick = (event: MouseEvent) => {
