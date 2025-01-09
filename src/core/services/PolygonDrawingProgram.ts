@@ -65,9 +65,8 @@ export const PolygonDrawingProgram = (
     if (currentRedoPolygon) {
       currentRedoPolygon.redo();
       undoStack.push(currentRedoPolygon);
+      redraw();
     }
-
-    redraw();
   };
 
   const innerRedo = () => {
@@ -80,9 +79,9 @@ export const PolygonDrawingProgram = (
         returnValue = true;
       }
       undoStack.push(currentPolygon);
+      redraw();
     }
 
-    redraw();
     return returnValue;
   };
 
