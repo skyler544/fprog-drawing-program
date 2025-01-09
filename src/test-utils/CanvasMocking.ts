@@ -9,6 +9,9 @@ export function createMockCanvasContext(): CanvasRenderingContext2D {
     fill: jest.fn(),
     closePath: jest.fn(),
     clearRect: jest.fn(),
+    moveTo: jest.fn(),
+    lineTo: jest.fn(),
+    stroke: jest.fn(),
     fillStyle: "",
   } as unknown as CanvasRenderingContext2D;
 }
