@@ -1,70 +1,77 @@
-import { DrawingService } from "../services/DrawingService.js";
 import { Point } from "../entities/Point.js";
-import { Polygon } from "../entities/Polygon.js";
-import { IDrawingProgram } from "../interfaces/DrawingProgram.js";
+import { Polygon, IPolygon } from "../entities/Polygon.js";
 
-export class PolygonDrawingProgram implements IDrawingProgram {
-  private drawingService: DrawingService;
+export interface IPolygonDrawingProgram {
+  leftClick: (point: Point) => void;
+  doubleClick: () => void;
+  undo: () => void;
+  redo: () => void;
+}
 
-  private undoStack: Polygon[] = [];
-  private redoStack: Polygon[] = [];
+export const PolygonDrawingProgram = (
+  drawingService: (polygons: IPolygon[]) => void,
+) => {
+  const undoStack: IPolygon[] = [];
+  const redoStack: IPolygon[] = [];
 
-  constructor(drawingService: DrawingService) {
-    this.drawingService = drawingService;
-  }
+  const redraw = () => {
+    drawingService(undoStack);
+  };
 
-  private redraw() {
-    this.drawingService.draw(this.undoStack);
-  }
-
-  leftClick(point: Point) {
-    const currentPolygon = this.undoStack.pop() ?? new Polygon();
+  const leftClick = (point: Point) => {
+    const currentPolygon = undoStack.pop() ?? Polygon();
     currentPolygon.addPoint(point);
-    this.undoStack.push(currentPolygon);
+    undoStack.push(currentPolygon);
 
-    this.redoStack = [];
-    this.redraw();
-  }
+    emptyRedoStack();
+    redraw();
+  };
 
-  doubleClick(): void {
-    this.undoStack.push(new Polygon());
+  const emptyRedoStack = () => {
+    while (redoStack.length > 0) {
+      redoStack.pop();
+    }
+  };
+
+  const doubleClick = () => {
+    undoStack.push(Polygon());
     return;
-  }
+  };
 
-  undo(): void {
-    if (this.undoStack.length === 0) {
+  const undo = () => {
+    if (undoStack.length === 0) {
       return;
     }
 
-    const currentPolygon = this.undoStack.pop() as Polygon;
+    const currentPolygon = undoStack.pop() as IPolygon;
     currentPolygon.undo();
 
     if (currentPolygon.length() === 0) {
-      this.redoStack.push(currentPolygon);
+      redoStack.push(currentPolygon);
     } else {
-      this.undoStack.push(currentPolygon);
+      undoStack.push(currentPolygon);
     }
 
-    this.redraw();
-  }
+    redraw();
+  };
 
-  redo(): void {
-    if (this.innerRedo()) {
+  const redo = () => {
+    if (innerRedo()) {
       return;
     }
 
-    const currentRedoPolygon = this.redoStack.pop() as Polygon;
+    const currentRedoPolygon = redoStack.pop() as IPolygon;
 
     if (currentRedoPolygon) {
       currentRedoPolygon.redo();
-      this.undoStack.push(currentRedoPolygon);
+      undoStack.push(currentRedoPolygon);
     }
 
-    this.redraw();
-  }
+    redraw();
+  };
 
-  private innerRedo(): boolean {
-    const currentPolygon = this.undoStack.pop() as Polygon;
+  const innerRedo = () => {
+    const currentPolygon = undoStack.pop() as IPolygon;
     let returnValue = false;
 
     if (currentPolygon) {
@@ -72,10 +79,17 @@ export class PolygonDrawingProgram implements IDrawingProgram {
         currentPolygon.redo();
         returnValue = true;
       }
-      this.undoStack.push(currentPolygon);
+      undoStack.push(currentPolygon);
     }
 
-    this.redraw();
+    redraw();
     return returnValue;
-  }
-}
+  };
+
+  return {
+    leftClick,
+    doubleClick,
+    undo,
+    redo,
+  };
+};

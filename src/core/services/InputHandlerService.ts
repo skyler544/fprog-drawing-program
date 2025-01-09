@@ -1,63 +1,58 @@
 import { Point } from "../entities/Point.js";
-import { IDrawingProgram } from "../interfaces/DrawingProgram.js";
+import { IPolygonDrawingProgram } from "./PolygonDrawingProgram.js";
 
-export class InputHandlerService {
-  private canvas: HTMLCanvasElement;
-  private drawingProgram: IDrawingProgram;
-  private singleClickTimeout: number | null = null;
+export const InputHandlerService = (
+  canvas: HTMLCanvasElement,
+  drawingProgram: IPolygonDrawingProgram,
+) => {
+  let singleClickTimeout: number | null = null;
 
-  constructor(canvas: HTMLCanvasElement, drawingProgram: IDrawingProgram) {
-    this.canvas = canvas;
-    this.drawingProgram = drawingProgram;
-    this.setupEventListeners();
-  }
-
-  setupEventListeners() {
-    this.canvas.addEventListener("click", (event: MouseEvent) =>
-      this.handleLeftClick(event),
+  const setupEventListeners = () => {
+    canvas.addEventListener("click", (event: MouseEvent) =>
+      handleLeftClick(event),
     );
 
-    this.canvas.addEventListener("dblclick", (event: MouseEvent) =>
-      this.handleDoubleClick(event),
+    canvas.addEventListener("dblclick", (event: MouseEvent) =>
+      handleDoubleClick(event),
     );
 
     const undoButton = document.getElementById("undo");
-    undoButton?.addEventListener("click", () => this.drawingProgram.undo());
+    undoButton?.addEventListener("click", () => drawingProgram.undo());
 
     const redoButton = document.getElementById("redo");
-    redoButton?.addEventListener("click", () => this.drawingProgram.redo());
-  }
+    redoButton?.addEventListener("click", () => drawingProgram.redo());
+  };
 
-  getMousePosition(event: MouseEvent): Point {
-    const rect = this.canvas.getBoundingClientRect();
-    return new Point(event.clientX - rect.left, event.clientY - rect.top);
-  }
+  const getMousePosition = (event: MouseEvent): Point => {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    } as Point;
+  };
 
-  handleLeftClick(event: MouseEvent) {
-    if (this.singleClickTimeout !== null) {
-      clearTimeout(this.singleClickTimeout);
+  const handleLeftClick = (event: MouseEvent) => {
+    if (singleClickTimeout !== null) {
+      clearTimeout(singleClickTimeout);
     }
 
-    this.singleClickTimeout = window.setTimeout(() => {
-      const point = this.getMousePosition(event);
+    singleClickTimeout = window.setTimeout(() => {
+      const point = getMousePosition(event);
 
-      console.log("Left click:");
-      console.log(point);
+      drawingProgram.leftClick(point);
 
-      this.drawingProgram.leftClick(point);
-
-      this.singleClickTimeout = null;
+      singleClickTimeout = null;
     }, 300);
-  }
+  };
 
-  handleDoubleClick(event: MouseEvent) {
-    if (this.singleClickTimeout !== null) {
-      clearTimeout(this.singleClickTimeout);
-      this.singleClickTimeout = null;
+  const handleDoubleClick = (event: MouseEvent) => {
+    if (singleClickTimeout !== null) {
+      clearTimeout(singleClickTimeout);
+      singleClickTimeout = null;
     }
 
-    console.log("Double click:");
+    drawingProgram.doubleClick();
+  };
 
-    this.drawingProgram.doubleClick();
-  }
-}
+  setupEventListeners();
+};

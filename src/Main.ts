@@ -12,8 +12,8 @@ export class Main {
       "drawingCanvas",
     ) as HTMLCanvasElement;
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    const drawingProgram = new PolygonDrawingProgram(new DrawingService(ctx));
-    new InputHandlerService(canvas, drawingProgram);
+    const drawingProgram = PolygonDrawingProgram(DrawingService(ctx));
+    InputHandlerService(canvas, drawingProgram);
   }
 }
 
