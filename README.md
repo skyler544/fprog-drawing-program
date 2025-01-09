@@ -15,7 +15,7 @@ This application is containerized with Docker. The `Makefile` provides a quick i
 
 ## Usage
 
-Visit the running application at `localhost:8080`. Left clicks start and end lines, while right clicks end shapes. The undo and redo buttons do what you would expect.
+Visit the running application at `localhost:8080`. Left clicks start and end lines, while double clicks end shapes. The undo and redo buttons do what you would expect.
 
 ## Modelling
 
