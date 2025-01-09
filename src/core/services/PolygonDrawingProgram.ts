@@ -58,9 +58,8 @@ export class PolygonDrawingProgram implements IDrawingProgram {
     if (currentRedoPolygon) {
       currentRedoPolygon.redo();
       this.undoStack.push(currentRedoPolygon);
+      this.redraw();
     }
-
-    this.redraw();
   }
 
   private innerRedo(): boolean {
@@ -73,9 +72,9 @@ export class PolygonDrawingProgram implements IDrawingProgram {
         returnValue = true;
       }
       this.undoStack.push(currentPolygon);
+      this.redraw();
     }
 
-    this.redraw();
     return returnValue;
   }
 }
